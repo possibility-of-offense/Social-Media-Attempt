@@ -1,0 +1,60 @@
+.navbar {
+  padding: 5px;
+}
+
+.navbar-not-logged-in {
+  background-color: var(--secondary-bg);
+}
+
+.navbar-logged-in {
+  background-color: var(--primary-bg);
+}
+
+.navbar-list {
+  max-width: 90%;
+  margin: 0 auto;
+  list-style: none outside;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-list li {
+  overflow: hidden;
+  border-radius: 3.5px;
+  transition: background-color 0.25s ease-out;
+}
+
+.navbar-list li a {
+  height: 100%;
+  width: 100%;
+  padding: 5px 20px;
+  display: block;
+  color: #fff;
+  transition: color 0.25s ease-out;
+}
+
+.navbar-list li svg {
+  transition: background-color 0.25s ease-out;
+}
+
+.navbar-list li:hover {
+  background-color: #fff;
+  color: var(--primary-bg);
+  fill: var(--primary-bg);
+}
+
+.navbar-list li:hover a {
+  color: var(--primary-bg);
+}
+
+.navbar-list li:hover svg {
+  fill: var(--primary-bg);
+}
+
+.navbar-list .logout-link {
+  background-color: #f2f2f2;
+}
+
+.navbar-list .logout-link a {
+  color: var(--primary-bg);
+}

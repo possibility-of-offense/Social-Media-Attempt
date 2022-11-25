@@ -1,0 +1,25 @@
+.tabs {
+  list-style: none outside;
+  display: flex;
+  padding: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabs li {
+  text-align: center;
+  border-radius: 5px;
+  transition: background-color 0.25s ease-out, box-shadow 0.2s ease-out;
+  position: relative;
+}
+
+.tabs li a {
+  text-decoration: none;
+  display: block;
+  padding: 11px 20px;
+  cursor: pointer;
+}
+
+.tabs li:hover {
+  background-color: #ddd;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}

@@ -1,0 +1,54 @@
+.skeleton-gallery-wrapper {
+  margin-bottom: 3rem;
+}
+
+.skeleton-gallery-wrapper__header {
+  padding-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  width: 100%;
+}
+
+.skeleton-gallery-wrapper__header h3 {
+  padding-left: 10px;
+}
+
+.skeleton-gallery-wrapper__header div {
+  box-shadow: 0 1px 2.5px 0.5px #1b74e485;
+  object-fit: cover;
+  position: relative;
+  overflow: hidden;
+  background: #eee;
+  background: linear-gradient(90deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  border-radius: 5px;
+  background-size: 200% 100%;
+  -webkit-animation: 1.5s shine linear infinite;
+  height: 60px;
+  animation: 1.5s shine linear infinite;
+}
+
+.skeleton-gallery-wrapper__body {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 0.6fr;
+}
+
+.skeleton-gallery-wrapper__body > div {
+  box-shadow: 0 1px 2.5px 0.5px #1b74e485;
+  object-fit: cover;
+  position: relative;
+  overflow: hidden;
+  background: #eee;
+  background: linear-gradient(90deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  border-radius: 5px;
+  background-size: 200% 100%;
+  -webkit-animation: 1.5s shine linear infinite;
+  height: 300px;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}

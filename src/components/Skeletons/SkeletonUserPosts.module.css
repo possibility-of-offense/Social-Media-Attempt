@@ -1,0 +1,32 @@
+.skeleton-wrapper {
+}
+
+.skeleton-wrapper h3 {
+  margin-bottom: 2rem;
+  padding-left: 10px;
+}
+
+.skeleton-wrapper > div {
+  padding: 1rem;
+  border-radius: 5px;
+  margin: 1rem;
+  margin-right: 2rem;
+  width: 100%;
+  height: 12rem;
+  box-shadow: 0 1px 2.5px 0.5px #1b74e485;
+  object-fit: cover;
+  position: relative;
+  overflow: hidden;
+  background: #eee;
+  background: linear-gradient(90deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  border-radius: 5px;
+  background-size: 200% 100%;
+  -webkit-animation: 1.5s shine linear infinite;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}

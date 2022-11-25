@@ -1,0 +1,37 @@
+.user-view {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: 1rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+@media (orientation: landscape) {
+  .user-view {
+    grid-template-columns: 0.3fr 1fr;
+  }
+}
+
+.user-view .user-view__avatar {
+  text-align: center;
+}
+
+.user-view .user-view__avatar p {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.user-view__avatar-img-container {
+  display: grid;
+  place-content: center;
+}
+
+.user-view__avatar-img-container img {
+  display: block;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}

@@ -1,13 +1,180 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body {
+  background-color: #f4f4f4 !important;
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* Variables */
+:root {
+  --primary-bg: #1b74e4;
+  --secondary-bg: #3a91ff;
+}
+
+/* Box shadows */
+.box-shadow-1 {
+  box-shadow: 1px 1.5px 2px rgba(0, 0, 0, 0.4);
+}
+
+.box-shadow-2 {
+  box-shadow: 0 1px 2.5px 0.5px rgba(0, 0, 0, 0.3);
+}
+
+/* Margins */
+.ml-auto {
+  margin-left: auto;
+}
+
+/* Flexbox */
+.flex {
+  display: flex;
+}
+
+/* Utilites */
+/* Utilites */
+/* Utilites */
+
+/* Active links */
+
+.active-navbar-link a {
+  background-color: #fff !important;
+  color: var(--primary-bg) !important;
+  fill: var(--primary-bg) !important;
+}
+
+.active-navbar-link svg {
+  fill: var(--primary-bg);
+}
+
+.active-tabs-link::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  height: 2.5px;
+  width: 100%;
+  opacity: 0;
+  background-color: var(--primary-bg);
+  border-radius: 3px;
+  overflow: hidden;
+  animation: showPseudoElement 0.25s forwards ease-out;
+}
+
+@keyframes showPseudoElement {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Outlet */
+.outlet {
+  padding: 2rem 0;
+}
+
+/* Forms */
+
+.form {
+  background-color: #fff;
+  padding: 20px 0 28px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 3rem auto;
+  padding: 1.5rem;
+}
+
+.form-wide {
+  max-width: 100%;
+}
+
+.form h4 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form input,
+.form textarea {
+  border: 1px solid #dddfe2;
+  color: #1d2129;
+  height: 22px;
+  line-height: 16px;
+  padding: 16px 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.form textarea {
+  height: 250px;
+}
+
+.form input:focus,
+.form input:active,
+.form textarea:focus,
+.form textarea:active {
+  outline-color: var(--primary-bg);
+}
+
+.form button {
+  color: #fff;
+  background-color: var(--primary-bg);
+  border: none;
+  padding: 5px 20px;
+  border-radius: 3.5px;
+  transition: background-color 0.25s ease-out;
+}
+
+.form button:hover,
+.form button:active,
+.form button:focus {
+  background-color: var(--secondary-bg);
+}
+
+/* DELETE LATER */
+/* DELETE LATER */
+/* DELETE LATER */
+/* DELETE LATER */
+/* DELETE LATER */
+/* DELETE LATER */
+/* DELETE LATER */
+/* Buttons */
+.btn-white {
+  background-color: #fff !important;
+}
+
+.skeleton-posts div {
+  background-color: #ddd;
+  height: 64px;
+  margin-bottom: 1rem;
+}
+
+.add-image-overlay {
+  position: relative;
+}
+
+.add-image-overlay::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ddd;
+  opacity: 0.5;
+  z-index: 2;
 }
