@@ -1,6 +1,12 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { Form, redirect } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Form, redirect, useNavigation } from "react-router-dom";
+import { AuthContext } from "../../context/auth-context";
 import { auth, firestore } from "../../firebase-config/config";
+import {
+  getFromLocalStorage,
+  setLocalStorage,
+} from "../../helpers/local-storage";
 
 export async function createPostAction({ request }) {
   const formData = await request.formData();
@@ -21,6 +27,24 @@ export async function createPostAction({ request }) {
 }
 
 const UserCreatePost = () => {
+  const userLocal = getFromLocalStorage("user");
+  const authContext = useContext(AuthContext);
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (!userLocal) {
+      if (auth && auth.currentUser) {
+        authContext.setUser({
+          displayName: auth.currentUser.displayName,
+          photoURL: auth.currentUser.photoURL,
+          uid: auth.currentUser.uid,
+        });
+        setLocalStorage("user", authContext.user);
+      }
+    }
+  }, [authContext.user]);
+
   return (
     <div className="form form-wide">
       <h4>Create post</h4>
