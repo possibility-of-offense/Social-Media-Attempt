@@ -1,18 +1,31 @@
 import { addDoc, collection } from "firebase/firestore";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLoaderData, Form, useFetcher } from "react-router-dom";
+import { ImagesContext } from "../../context/images-context";
 import { firestore, storage } from "../../firebase-config/config";
 
 import photograph from "./photograph.png";
 import classes from "./UserGallery.module.css";
+import UserGalleryImage from "./UserGalleryImage";
 
 export async function getGalleryLoader({ params }) {
   const userId = params.id;
 
   try {
     const images = await listAll(ref(storage, "gallery/" + userId));
-    const urls = images.items.map(async (url) => await getDownloadURL(url));
+    const urls = images.items.map(async (url) => {
+      const urlImg = await getDownloadURL(url);
+      return {
+        id: url.fullPath
+          .split("/")
+          .pop()
+          .split(/\.jpg|\.png/)
+          .slice(0, -1)
+          .join(""),
+        url: urlImg,
+      };
+    });
     const res = await Promise.all(urls);
     return res;
   } catch (error) {
@@ -23,8 +36,6 @@ export async function getGalleryLoader({ params }) {
 export async function setGalleryAction({ request, params }) {
   const formData = await request.formData();
   const image = Object.fromEntries(formData);
-  console.log(image.image);
-
   const storageRef = ref(storage, "gallery/" + params.id + "/");
 
   try {
@@ -33,6 +44,12 @@ export async function setGalleryAction({ request, params }) {
     await Promise.all([
       await uploadBytes(imageRef, image.image),
       await addDoc(collection(firestore, "images"), {
+        id: imageRef.fullPath
+          .split("/")
+          .pop()
+          .split(/\.jpg|\.png/)
+          .slice(0, -1)
+          .join(""),
         storageRef: imageRef.fullPath,
         ownerId: params.id,
       }),
@@ -46,12 +63,21 @@ const UserGallery = () => {
   const gallery = useLoaderData();
   const fetcher = useFetcher();
   const [selectedFile, setSelectedFile] = useState("");
+  const imagesContext = useContext(ImagesContext);
+
+  useEffect(() => {
+    imagesContext.setImages(gallery);
+  }, []);
 
   const handleLabelClick = (e) => {
     if (e.target.files[0] && e.target.files[0].name) {
       setSelectedFile(e.target.files[0].name);
     }
   };
+
+  useEffect(() => {
+    imagesContext.setImages(gallery);
+  }, []);
 
   return (
     <div className={classes["gallery"]}>
@@ -79,7 +105,9 @@ const UserGallery = () => {
       <div className={classes["gallery-wrapper"]}>
         <div className={`${classes["gallery-wrapper__grid"]} box-shadow-2`}>
           {gallery.length > 0 &&
-            gallery.map((item) => <img key={item} alt="Image" src={item} />)}
+            gallery.map((item) => (
+              <UserGalleryImage key={item.id} item={item} />
+            ))}
         </div>
       </div>
     </div>

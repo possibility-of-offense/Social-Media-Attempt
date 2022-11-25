@@ -23,6 +23,8 @@ import UserGallery, {
   getGalleryLoader,
   setGalleryAction,
 } from "./components/User/UserGallery";
+import SingleImage, { singleImageLoader } from "./views/SingleImage";
+import { deleteAction } from "./components/User/UserSinglePost";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,6 +48,7 @@ const router = createBrowserRouter(
             path="posts"
             element={<UserPosts />}
             loader={userPostsLoader}
+            action={deleteAction}
           ></Route>
           <Route
             path="gallery"
@@ -54,6 +57,11 @@ const router = createBrowserRouter(
             action={setGalleryAction}
           ></Route>
         </Route>
+        <Route
+          path="/gallery/:img"
+          element={<SingleImage />}
+          loader={singleImageLoader}
+        ></Route>
       </Route>
     </Fragment>
   )

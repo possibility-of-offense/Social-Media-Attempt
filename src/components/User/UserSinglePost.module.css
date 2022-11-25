@@ -3,6 +3,52 @@
   border-radius: 5px;
   margin: 1rem;
   box-shadow: 0 1px 2.5px 0.5px #1b74e485;
+  position: relative;
+  overflow: hidden;
+}
+
+.post button.delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  background-color: #ef4545;
+  padding: 4px 10px;
+  color: #fff;
+  border-radius: 0 0 0 5px;
+}
+
+.post-loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.post-loading::before {
+  content: "";
+  background-color: rgba(255, 255, 255, 0.795);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 20px;
+  transform: skew(-20deg);
+  z-index: 2;
+  animation: moveSkew 0.4s linear infinite;
+}
+
+@keyframes moveSkew {
+  from {
+    left: 0;
+  }
+  to {
+    left: 100%;
+  }
 }
 
 .post > div {
@@ -10,7 +56,7 @@
   align-items: center;
 }
 
-.post img {
+.post > div > img {
   width: 45px;
   height: 45px;
   object-fit: cover;
@@ -36,4 +82,38 @@
   margin: 0;
   margin-top: 13px;
   padding-left: 5px;
+}
+
+.post-actions {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.post-actions button {
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.25s ease-out;
+  margin-right: 10px;
+}
+
+.post-actions button:hover,
+.post-actions button:focus,
+.post-actions button:active {
+  background-color: #f2f2f2;
+}
+
+.post-actions button img {
+  width: 20px;
+}
+
+.post-actions button span {
+  display: inline-block;
+  margin-left: 6px;
+  margin-top: 2px;
 }

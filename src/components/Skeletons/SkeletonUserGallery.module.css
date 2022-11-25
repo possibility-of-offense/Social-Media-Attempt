@@ -14,7 +14,6 @@
 }
 
 .skeleton-gallery-wrapper__header div {
-  box-shadow: 0 1px 2.5px 0.5px #1b74e485;
   object-fit: cover;
   position: relative;
   overflow: hidden;
@@ -34,7 +33,7 @@
 }
 
 .skeleton-gallery-wrapper__body > div {
-  box-shadow: 0 1px 2.5px 0.5px #1b74e485;
+  box-shadow: 0 1px 2.5px 0.5px rgba(0, 0, 0, 0.3);
   object-fit: cover;
   position: relative;
   overflow: hidden;

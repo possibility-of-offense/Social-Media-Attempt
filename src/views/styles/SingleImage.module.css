@@ -1,0 +1,34 @@
+.images {
+  width: 100%;
+  height: calc(100vh - 48.4px);
+  background-color: black;
+  display: grid;
+  grid-template-columns: 1fr 0.3fr;
+  overflow: hidden;
+}
+.images > div:first-child {
+  position: relative;
+}
+
+/* REFACTOR all of these styling! TESTING! */
+
+.images .actions {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-100%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.images img {
+  display: block;
+  height: 80vh;
+  width: 400px;
+  object-fit: cover;
+}
+
+.comment-info {
+  background-color: #ddd;
+  padding: 1rem;
+}
