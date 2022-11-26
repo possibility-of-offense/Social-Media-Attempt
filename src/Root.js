@@ -11,7 +11,8 @@ import LoadingOverlay from "./components/Generic/Overlay";
 import { AuthContext } from "./context/auth-context";
 import { ImagesContext } from "./context/images-context";
 import { auth } from "./firebase-config/config";
-import { removeFromLocalStorage } from "./helpers/local-storage";
+import AuthContextProvider from "./context/auth-context";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Root() {
   const navigate = useNavigate();
@@ -24,7 +25,6 @@ function Root() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      removeFromLocalStorage("user");
       authContext.removeUser();
       navigate("/");
     } catch (error) {
@@ -32,15 +32,19 @@ function Root() {
     }
   };
 
+  const [userState, loadingState, errorState] = useAuthState(auth);
+
   const isGalleryView = location.pathname.startsWith("/gallery/");
 
   return (
     <div className="Root">
-      <Navigation onLogout={handleLogout} />
+      <Navigation onLogout={handleLogout} isLoading={loadingState} />
       {navigation.state === "submitting" && <LoadingOverlay />}
       <div className={isGalleryView ? "" : `outlet`}>
         <ImagesContext.Provider value={{ images, setImages }}>
-          <Outlet />
+          <AuthContextProvider>
+            {loadingState ? <LoadingOverlay /> : <Outlet />}
+          </AuthContextProvider>
         </ImagesContext.Provider>
       </div>
     </div>

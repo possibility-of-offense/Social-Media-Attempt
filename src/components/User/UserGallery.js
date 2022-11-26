@@ -1,9 +1,10 @@
 import { addDoc, collection } from "firebase/firestore";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
-import { useContext, useEffect, useState } from "react";
-import { useLoaderData, Form, useFetcher } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useLoaderData, useFetcher, useParams } from "react-router-dom";
+import { AuthContext } from "../../context/auth-context";
 import { ImagesContext } from "../../context/images-context";
-import { firestore, storage } from "../../firebase-config/config";
+import { auth, firestore, storage } from "../../firebase-config/config";
 
 import photograph from "./photograph.png";
 import classes from "./UserGallery.module.css";
@@ -52,6 +53,7 @@ export async function setGalleryAction({ request, params }) {
           .join(""),
         storageRef: imageRef.fullPath,
         ownerId: params.id,
+        title: image.title,
       }),
     ]);
   } catch (error) {
@@ -62,52 +64,91 @@ export async function setGalleryAction({ request, params }) {
 const UserGallery = () => {
   const gallery = useLoaderData();
   const fetcher = useFetcher();
+
   const [selectedFile, setSelectedFile] = useState("");
+  const [imageTitle, setImageTitle] = useState("");
+
   const imagesContext = useContext(ImagesContext);
+  const { user } = useContext(AuthContext);
+  const { id: paramsId } = useParams();
 
   useEffect(() => {
     imagesContext.setImages(gallery);
+    setImageTitle("");
   }, []);
 
+  useEffect(() => {
+    setSelectedFile("");
+    setImageTitle("");
+  }, [gallery]);
+
+  const inputImageRef = useRef(null);
   const handleLabelClick = (e) => {
     if (e.target.files[0] && e.target.files[0].name) {
       setSelectedFile(e.target.files[0].name);
     }
   };
 
-  useEffect(() => {
-    imagesContext.setImages(gallery);
-  }, []);
+  const handleLabelEnterKey = (e) => {
+    if (e.key === "Enter") {
+      inputImageRef.current.click();
+    }
+  };
 
   return (
     <div className={classes["gallery"]}>
       <div className={classes["gallery-form"]}>
         <h3>Gallery</h3>
-        <fetcher.Form encType="multipart/form-data" method="post">
-          {selectedFile && (
-            <small>
-              <strong>Selected file:</strong> {selectedFile}
-            </small>
-          )}
-          <label htmlFor={classes["fileInput"]}>
-            <img alt="Download" title="Download" src={photograph} />
-            <input
-              onChange={handleLabelClick}
-              id={classes["fileInput"]}
-              type="file"
-              name="image"
-            />
-          </label>
-          <button type="submit">Upload an image</button>
-        </fetcher.Form>
+        {user?.uid === paramsId && (
+          <fetcher.Form encType="multipart/form-data" method="post">
+            <label
+              className={classes["titleInput-label"]}
+              htmlFor={classes["titleInput"]}
+            >
+              <input
+                type="text"
+                name="title"
+                className="box-shadow-1"
+                id={classes["titleInput"]}
+                value={imageTitle}
+                placeholder="Title of the image"
+                onChange={(e) => setImageTitle(e.target.value)}
+              />
+            </label>
+            {selectedFile && (
+              <small>
+                <strong>Selected file:</strong> {selectedFile}
+              </small>
+            )}
+            <label
+              tabIndex="0"
+              className={classes["imageInput-label"]}
+              htmlFor={classes["fileInput"]}
+              onKeyDown={handleLabelEnterKey}
+            >
+              <img alt="Download" title="Download" src={photograph} />
+              <input
+                ref={inputImageRef}
+                onChange={handleLabelClick}
+                id={classes["fileInput"]}
+                type="file"
+                name="image"
+              />
+            </label>
+            <button type="submit">Upload an image</button>
+          </fetcher.Form>
+        )}
       </div>
 
       <div className={classes["gallery-wrapper"]}>
         <div className={`${classes["gallery-wrapper__grid"]} box-shadow-2`}>
-          {gallery.length > 0 &&
+          {gallery.length > 0 ? (
             gallery.map((item) => (
               <UserGalleryImage key={item.id} item={item} />
-            ))}
+            ))
+          ) : (
+            <h3>No images in the gallery yet!</h3>
+          )}
         </div>
       </div>
     </div>

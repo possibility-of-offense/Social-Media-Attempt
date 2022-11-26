@@ -2,6 +2,20 @@
   padding: 5px;
 }
 
+.navbar-loading {
+  position: relative;
+}
+
+.navbar-loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--primary-bg);
+}
+
 .navbar-not-logged-in {
   background-color: var(--secondary-bg);
 }

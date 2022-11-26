@@ -1,12 +1,15 @@
-import { Fragment, useContext } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { AuthContext } from "../../context/auth-context";
+import { Fragment } from "react";
+import { NavLink, useLocation, useParams } from "react-router-dom";
+import { auth } from "../../firebase-config/config";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import classes from "./Navigation.module.css";
 
-const Navigation = ({ onLogout }) => {
-  const authContext = useContext(AuthContext);
+const Navigation = ({ onLogout, isLoading }) => {
   const routing = useLocation();
+  const [userState, loadingState, errorState] = useAuthState(auth);
+
+  const { id: paramsId } = useParams();
 
   let appendClasses = (route) =>
     route === routing.pathname ? "active-navbar-link" : "";
@@ -14,10 +17,10 @@ const Navigation = ({ onLogout }) => {
   return (
     <nav
       className={`${classes["navbar"]} ${
-        authContext.user
+        userState
           ? classes["navbar-logged-in"]
           : classes["navbar-not-logged-in"]
-      } box-shadow-1`}
+      } ${isLoading ? classes["navbar-loading"] : ""} box-shadow-1`}
     >
       <ul className={classes["navbar-list"]}>
         <li className={appendClasses("/")}>
@@ -33,7 +36,7 @@ const Navigation = ({ onLogout }) => {
             </svg>
           </NavLink>{" "}
         </li>
-        {!authContext.user && (
+        {userState === null && (
           <div className="ml-auto">
             <li className={appendClasses("/login")}>
               <NavLink activeclassname="active-navbar-link" to="/login">
@@ -43,10 +46,10 @@ const Navigation = ({ onLogout }) => {
           </div>
         )}
         &nbsp;
-        {authContext.user && (
+        {userState && (
           <Fragment>
             <li>
-              <NavLink to={`user/${authContext.user.uid}`}>My Profile</NavLink>
+              <NavLink to={`user/${userState?.uid}`}>My Profile</NavLink>
             </li>
 
             <div className="ml-auto">

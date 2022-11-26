@@ -10,23 +10,69 @@
   position: relative;
 }
 
-/* REFACTOR all of these styling! TESTING! */
-
 .images .actions {
   position: absolute;
   top: 50%;
-  transform: translateY(-100%);
+  transform: translateY(-70%);
+  opacity: 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
+  z-index: 10;
+  transition: all 0.25s ease-out;
+}
+
+.images .actions.show-actions {
+  transform: translateY(-100%);
+  opacity: 1;
+}
+
+.images .actions button {
+  color: #fff;
+  background-color: var(--primary-bg);
+  border: none;
+  padding: 5px 20px;
+  border-radius: 3.5px;
+  transition: background-color 0.25s ease-out;
+}
+
+.images .actions button.disable {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.image-wrapper__parent {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.image-wrapper {
+  width: 100%;
+  padding-top: 50%;
+  position: relative;
 }
 
 .images img {
-  display: block;
-  height: 80vh;
-  width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;
   object-fit: cover;
 }
+
+/* .skeleton-image {
+  background-color: red;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  z-index: 100;
+} */
 
 .comment-info {
   background-color: #ddd;

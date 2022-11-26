@@ -1,50 +1,56 @@
-import { Form, redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase-config/config";
-import { setLocalStorage } from "../helpers/local-storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useAuthState } from "../hooks/useAuthState";
-import { useEffect } from "react";
+import { useState } from "react";
 
-export async function loginAction({ request }) {
-  const data = await request.formData();
-  const info = Object.fromEntries(data);
-  const { user } = await signInWithEmailAndPassword(
-    auth,
-    info.email,
-    info.password
-  );
-
-  setLocalStorage("user", {
-    id: user.uid,
-    name: user.displayName,
-    image: user.photoURL,
-  });
-
-  console.log(user.uid);
-
-  return redirect(`/user/${user.uid}`);
-}
+import classes from "./styles/Login.module.css";
 
 const Login = () => {
-  const { user } = useAuthState();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (user) navigate("/");
-  // }, []);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(e.target);
+    const userData = Object.fromEntries(formData);
+
+    const firebaseInfo = await signInWithEmailAndPassword(
+      auth,
+      userData.email,
+      userData.password
+    );
+
+    setLoading(false);
+    navigate("/user/" + firebaseInfo.user.uid);
+  };
 
   return (
     <div className="form">
       <h4>Login</h4>
-      <Form method="post">
+      <form method="post" onSubmit={handleLogin}>
         <input type="text" name="email" defaultValue="conscience90@gmail.com" />
         <input type="text" name="password" defaultValue="test1234" />
         <div className="flex">
-          <button className="box-shadow-2 ml-auto" type="submit">
-            Login
+          <button
+            className={`${"box-shadow-2 ml-auto"} ${classes.btn}`}
+            type="submit"
+          >
+            <span className={loading ? classes["hide-login-span"] : ""}>
+              Login
+            </span>
+            {loading && (
+              <div className={classes["lds-ring"]}>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            )}
           </button>
         </div>
-      </Form>
+      </form>
     </div>
   );
 };

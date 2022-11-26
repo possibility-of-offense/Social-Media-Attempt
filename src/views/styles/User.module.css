@@ -8,6 +8,11 @@
   border-radius: 5px;
 }
 
+.user-view > div {
+  position: relative;
+  /* height: 80vh; */
+}
+
 @media (orientation: landscape) {
   .user-view {
     grid-template-columns: 0.3fr 1fr;
@@ -34,4 +39,24 @@
   height: 200px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.skeleton-gallery-image {
+  width: 100%;
+  height: 70vh;
+  box-shadow: 0 1px 2.5px 0.5px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+  position: relative;
+  overflow: hidden;
+  background: #eee;
+  background: linear-gradient(90deg, #d3d2d2 8%, #f5f5f5 18%, #d3d2d2 33%);
+  background-size: 200% 100%;
+  -webkit-animation: 1.5s shine linear infinite;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
 }

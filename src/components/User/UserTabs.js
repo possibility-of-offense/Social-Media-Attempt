@@ -1,10 +1,14 @@
-import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Fragment, useLayoutEffect, useRef } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { NavLink, useLocation, useParams } from "react-router-dom";
+import { auth } from "../../firebase-config/config";
 
 import classes from "./UserTabs.module.css";
 
-const UserTabs = ({ user }) => {
+const UserTabs = ({ user, friend }) => {
   const routing = useLocation();
+  const { id: paramsId } = useParams();
+
   let appendClasses = (route) => {
     return route === routing.pathname ? "active-tabs-link" : "";
   };
@@ -23,24 +27,36 @@ const UserTabs = ({ user }) => {
       listRef.current?.removeEventListener("click", handleListItemClick);
   }, []);
 
+  const [userState] = useAuthState(auth);
+
   return (
     <ul className={classes["tabs"]} ref={listRef}>
-      {user && (
-        <Fragment>
-          <li className={appendClasses(`/user/${user.uid}`)}>
+      <Fragment>
+        {user && user?.uid === paramsId && (
+          <li className={appendClasses(`/user/${user?.uid}`)}>
             <NavLink to={`/user/${user.uid}`}>Create Post</NavLink>
           </li>
-          <li className={appendClasses(`/user/${user.uid}/posts`)}>
-            <NavLink to="posts">My posts</NavLink>
+        )}
+
+        <Fragment>
+          <li className={appendClasses(`/user/${paramsId}/posts`)}>
+            <NavLink to="posts">
+              {userState?.uid === paramsId
+                ? "My posts"
+                : `The posts of ${friend?.displayName}`}
+            </NavLink>
           </li>
-          <li className={appendClasses(`/user/${user.uid}/gallery`)}>
+          <li className={appendClasses(`/user/${paramsId}/gallery`)}>
             <NavLink to="gallery">Gallery</NavLink>
           </li>
-          <li className={appendClasses(`/user/${user.uid}/edit-info`)}>
+        </Fragment>
+
+        {userState?.uid === paramsId && (
+          <li className={appendClasses(`/user/${user?.uid}/edit-info`)}>
             <NavLink to="edit-info">Edit Info</NavLink>
           </li>
-        </Fragment>
-      )}
+        )}
+      </Fragment>
     </ul>
   );
 };

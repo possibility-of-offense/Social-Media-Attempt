@@ -11,8 +11,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from "./views/Home";
-import AuthContextProvider from "./context/auth-context";
-import Login, { loginAction } from "./views/Login";
+import Login from "./views/Login";
 import UserEditInfo, { editInfoAction } from "./components/User/UserEditInfo";
 import User from "./views/User";
 import UserCreatePost, {
@@ -31,7 +30,7 @@ const router = createBrowserRouter(
     <Fragment>
       <Route path="/" element={<Root />}>
         <Route index element={<Home />}></Route>
-        <Route path="/login" element={<Login />} action={loginAction}></Route>
+        <Route path="/login" element={<Login />}></Route>
 
         <Route path="/user/:id" element={<User />}>
           <Route
@@ -56,25 +55,23 @@ const router = createBrowserRouter(
             loader={getGalleryLoader}
             action={setGalleryAction}
           ></Route>
+          <Route
+            path="gallery/:img"
+            element={<SingleImage />}
+            loader={singleImageLoader}
+          ></Route>
         </Route>
-        <Route
-          path="/gallery/:img"
-          element={<SingleImage />}
-          loader={singleImageLoader}
-        ></Route>
       </Route>
     </Fragment>
   )
 );
 
-const session = JSON.parse(localStorage.getItem("user"));
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-  <AuthContextProvider session={session}>
-    <RouterProvider router={router} />
-  </AuthContextProvider>
+
+  <RouterProvider router={router} />
+
   // </React.StrictMode>
 );
 

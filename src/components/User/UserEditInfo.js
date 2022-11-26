@@ -1,19 +1,23 @@
 import { updateProfile } from "firebase/auth";
-import { useContext } from "react";
+import { doc, updateDoc } from "firebase/firestore";
 import { Form, redirect } from "react-router-dom";
-import { AuthContext } from "../../context/auth-context";
-import { auth } from "../../firebase-config/config";
-import { removeFromLocalStorage } from "../../helpers/local-storage";
+import { auth, firestore } from "../../firebase-config/config";
 
 export async function editInfoAction({ request, params }) {
   const formData = await request.formData();
   const editInfoData = Object.fromEntries(formData);
 
-  await updateProfile(auth.currentUser, {
-    displayName: editInfoData.nickname,
-    photoURL: editInfoData.image,
-  });
-  removeFromLocalStorage("user");
+  await Promise.all([
+    updateProfile(auth.currentUser, {
+      displayName: editInfoData.nickname,
+      photoURL: editInfoData.image,
+    }),
+    updateDoc(doc(firestore, "users", params.id), {
+      displayName: editInfoData.nickname,
+      photoURL: editInfoData.image,
+      uid: params.id,
+    }),
+  ]);
 
   return redirect(`/user/${params.id}`);
 }

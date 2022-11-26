@@ -1,8 +1,19 @@
 .gallery-form {
   margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-gap: 1rem;
+}
+
+@media (orientation: landscape) {
+  .gallery-form {
+    grid-template-columns: 1fr 0.4fr;
+  }
+}
+
+.gallery-wrapper h3 {
+  margin: 0 !important;
+  grid-column: 1 / -1;
+  font-size: 15px;
 }
 
 .gallery-form small {
@@ -24,7 +35,7 @@
   padding-left: 10px;
 }
 
-label {
+label.imageInput-label {
   cursor: pointer;
   background-color: #f4f4f4;
   padding: 10px;
@@ -38,6 +49,17 @@ label img {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+label.titleInput-label {
+  width: 100%;
+}
+
+#titleInput {
+  width: 100%;
+  padding: 3px;
+  border: 1px solid #eee;
+  margin-bottom: 10px;
 }
 
 #fileInput {
