@@ -1,29 +1,15 @@
-import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase-config/config";
+import HomeSingleUser from "./HomeSingleUser";
 import classes from "./HomeUsers.module.css";
 
 const HomeUsers = ({ users }) => {
-  const navigate = useNavigate();
+  const [userState] = useAuthState(auth);
 
   return (
-    <div className={classes["home-users"]}>
+    <div className={`${classes["home-users"]}`}>
       {users.map((user) => (
-        <div key={user.id}>
-          <img
-            src={user.photoURL}
-            alt={user.displayName}
-            title={user.displayName}
-          />
-          <h5>{user.displayName}</h5>
-          <div>
-            <button
-              onClick={() => {
-                navigate(`/user/${user.id}`);
-              }}
-            >
-              See {user.displayName}
-            </button>
-          </div>
-        </div>
+        <HomeSingleUser key={user.id} user={user} userState={userState} />
       ))}
     </div>
   );

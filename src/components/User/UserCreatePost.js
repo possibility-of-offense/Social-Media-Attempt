@@ -1,6 +1,14 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { Fragment } from "react";
-import { Form, redirect } from "react-router-dom";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { Fragment, useContext, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Form, redirect, useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../../context/auth-context";
 import { auth, firestore } from "../../firebase-config/config";
 
 export async function createPostAction({ request }) {
@@ -22,6 +30,30 @@ export async function createPostAction({ request }) {
 }
 
 const UserCreatePost = () => {
+  const navigate = useNavigate();
+  const { id: paramsId } = useParams();
+  const [userState] = useAuthState(auth);
+  const { friend, setFriend } = useContext(AuthContext);
+
+  useEffect(() => {
+    async function getUserInfo() {
+      try {
+        const user = await getDoc(doc(firestore, "users", paramsId));
+
+        if (user.exists()) {
+          setFriend(user.data());
+        }
+      } catch (error) {
+        console.log(error, "User.js");
+      }
+    }
+    if (!userState || userState.uid !== paramsId) {
+      getUserInfo().then((res) => {
+        navigate("posts");
+      });
+    }
+  }, [userState]);
+
   return (
     <Fragment>
       <div className="form form-wide">

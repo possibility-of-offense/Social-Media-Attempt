@@ -25,6 +25,7 @@ import UserGallery, {
 import SingleImage, { singleImageLoader } from "./views/SingleImage";
 import { deleteAction } from "./components/User/UserSinglePost";
 import SearchView from "./views/SearchView";
+import FriendsView from "./views/FriendsView";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -61,6 +62,7 @@ const router = createBrowserRouter(
             element={<SingleImage />}
             loader={singleImageLoader}
           ></Route>
+          <Route path="friends" element={<FriendsView />}></Route>
         </Route>
         <Route path="search/:value" element={<SearchView />}></Route>
       </Route>

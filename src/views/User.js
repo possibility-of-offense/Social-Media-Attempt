@@ -1,6 +1,7 @@
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import {
+  Link,
   Outlet,
   useNavigate,
   useNavigation,
@@ -22,6 +23,7 @@ const User = () => {
   const { id: paramsId } = useParams();
 
   const [userState, loading] = useAuthState(auth);
+  const [friendsLen, setFriendsLen] = useState(null);
 
   useEffect(() => {
     async function getUserInfo() {
@@ -35,6 +37,20 @@ const User = () => {
         console.log(error, "User.js");
       }
     }
+
+    async function getAllFriends() {
+      try {
+        const friends = await getDocs(
+          query(collection(firestore, "users", paramsId, "friends"))
+        );
+        if (friends.docs.length > 0) setFriendsLen(friends.docs.length);
+      } catch (error) {
+        console.log(error, "User.js");
+      }
+    }
+    getAllFriends();
+
+    console.log("starts");
 
     if (!userState || userState.uid !== paramsId) {
       getUserInfo().then((res) => {
@@ -73,7 +89,18 @@ const User = () => {
             className="box-shadow-2"
           />
         </div>
+        <div>
+          <br />
+          {friendsLen !== null && (
+            <h5>
+              <Link to="friends">
+                Friend{friendsLen > 1 ? "s" : ""} - {friendsLen}
+              </Link>
+            </h5>
+          )}
+        </div>
       </div>
+
       <div className={classes["user-tabs"]}>
         <UserTabs user={userState} friend={friend} />
 
