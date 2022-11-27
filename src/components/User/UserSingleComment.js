@@ -7,7 +7,7 @@ import { firestore } from "../../firebase-config/config";
 const UserSingleComment = ({ comment, userState, postId }) => {
   const { id } = useParams();
 
-  let isOwner = userState.uid === id;
+  let isOwner = userState?.uid === id;
   const [showDeleteButton, setShowDeleteButton] = useState(false);
 
   const handleShowDeleteButton = () => {
@@ -43,7 +43,12 @@ const UserSingleComment = ({ comment, userState, postId }) => {
         </div>
       )}
       <div className={classes["single-comment__image"]}>
-        <img width="50" src={comment.ownerPhoto} />
+        <img
+          width="50"
+          src={comment.ownerPhoto}
+          title={comment.ownerName}
+          alt={comment.ownerName}
+        />
       </div>
       <div className={classes["single-comment__body"]}>
         <p>{comment.ownerName}</p>

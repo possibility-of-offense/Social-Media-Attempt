@@ -30,11 +30,11 @@ const UserComments = ({ id }) => {
     fetchComments();
 
     return () => snapshot();
-  }, []);
+  }, [id]);
 
   return (
     <section className="mt-1-5">
-      {comments.length > 0 &&
+      {comments.length > 0 ? (
         comments.map((comment) => (
           <UserSingleComment
             key={comment.id}
@@ -42,7 +42,10 @@ const UserComments = ({ id }) => {
             userState={userState}
             postId={id}
           />
-        ))}
+        ))
+      ) : (
+        <p>No comments yet...</p>
+      )}
     </section>
   );
 };

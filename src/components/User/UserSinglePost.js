@@ -30,7 +30,7 @@ const UserSinglePost = ({ post }) => {
   const { friend } = useContext(AuthContext);
   const { id: paramsId } = useParams();
 
-  const [userState, loadingState, errorState] = useAuthState(auth);
+  const [userState] = useAuthState(auth);
 
   // Date
   const date = new Date(post.dateCreated.seconds * 1000);
@@ -86,7 +86,7 @@ const UserSinglePost = ({ post }) => {
       setLikesLoaded(true);
     }
     getLikes();
-  }, []);
+  }, [post.id, userState]);
 
   // Handle Like
   const handleLike = async () => {
@@ -167,15 +167,17 @@ const UserSinglePost = ({ post }) => {
       <div className={classes["post-actions"]}>
         {likesLoaded && (
           <Fragment>
-            <div>
-              <button
-                onClick={handleLike}
-                className={alreadyLikes ? classes["already-likes"] : ""}
-              >
-                <img alt="Like" title="Like" src={like} />
-                <span>Like</span>
-              </button>
-            </div>
+            {userState && (
+              <div>
+                <button
+                  onClick={handleLike}
+                  className={alreadyLikes ? classes["already-likes"] : ""}
+                >
+                  <img alt="Like" title="Like" src={like} />
+                  <span>Like</span>
+                </button>
+              </div>
+            )}
             <button onClick={handleToggleCommentForm}>
               <img alt="Comment" title="Comment" src={charBallong} />
               <span>Comment</span>
@@ -183,7 +185,7 @@ const UserSinglePost = ({ post }) => {
           </Fragment>
         )}
       </div>
-      {showCommentForm && (
+      {userState && showCommentForm && (
         <UserCommentForm onCloseCommentForm={setShowCommentForm} id={post.id} />
       )}
       <UserComments id={post.id} />
