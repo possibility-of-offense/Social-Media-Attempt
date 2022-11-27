@@ -7,7 +7,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { useFetcher, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/auth-context";
 import { auth, firestore } from "../../firebase-config/config";
@@ -53,23 +53,36 @@ const UserSinglePost = ({ post }) => {
 
   useEffect(() => {
     async function getLikes() {
-      const [alreadyLiked, likesNum] = await Promise.all([
-        getDocs(
-          query(
-            collection(firestore, "posts", post.id, "likes"),
-            where("ownerId", "==", userState.uid)
+      const requests = [];
+
+      if (userState) {
+        requests.push(
+          getDocs(
+            query(
+              collection(firestore, "posts", post.id, "likes"),
+              where("ownerId", "==", userState.uid)
+            )
           )
-        ),
-        getDocs(query(collection(firestore, "posts", post.id, "likes"))),
-      ]);
-
-      if (alreadyLiked.docs.length > 0) {
-        setAlreadyLikes(true);
+        );
       }
-      if (likesNum.docs.length > 0) {
-        setLikesNumber(likesNum.docs.length);
-      }
+      requests.push(
+        getDocs(query(collection(firestore, "posts", post.id, "likes")))
+      );
 
+      const result = await Promise.all(requests);
+
+      if (result.length > 1) {
+        if (result[0].docs.length > 0) {
+          setAlreadyLikes(true);
+        }
+        if (result[1] && result[1].docs.length > 0) {
+          setLikesNumber(result[1].docs.length);
+        }
+      } else if (result.length === 1) {
+        if (result[0] && result[0].docs.length > 0) {
+          setLikesNumber(result[0].docs.length);
+        }
+      }
       setLikesLoaded(true);
     }
     getLikes();
@@ -152,19 +165,23 @@ const UserSinglePost = ({ post }) => {
       )}
 
       <div className={classes["post-actions"]}>
-        <div>
-          <button
-            onClick={handleLike}
-            className={alreadyLikes ? classes["already-likes"] : ""}
-          >
-            <img alt="Like" title="Like" src={like} />
-            <span>Like</span>
-          </button>
-        </div>
-        <button onClick={handleToggleCommentForm}>
-          <img alt="Comment" title="Comment" src={charBallong} />
-          <span>Comment</span>
-        </button>
+        {likesLoaded && (
+          <Fragment>
+            <div>
+              <button
+                onClick={handleLike}
+                className={alreadyLikes ? classes["already-likes"] : ""}
+              >
+                <img alt="Like" title="Like" src={like} />
+                <span>Like</span>
+              </button>
+            </div>
+            <button onClick={handleToggleCommentForm}>
+              <img alt="Comment" title="Comment" src={charBallong} />
+              <span>Comment</span>
+            </button>
+          </Fragment>
+        )}
       </div>
       {showCommentForm && (
         <UserCommentForm onCloseCommentForm={setShowCommentForm} id={post.id} />
