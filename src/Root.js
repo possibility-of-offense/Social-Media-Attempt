@@ -32,7 +32,7 @@ function Root() {
     }
   };
 
-  const [userState, loadingState, errorState] = useAuthState(auth);
+  const [_, loadingState] = useAuthState(auth);
 
   const isGalleryView = location.pathname.startsWith("/gallery/");
 
@@ -40,7 +40,13 @@ function Root() {
     <div className="Root">
       <Navigation onLogout={handleLogout} isLoading={loadingState} />
       {navigation.state === "submitting" && <LoadingOverlay />}
-      <div className={isGalleryView ? "" : `outlet`}>
+      <div
+        className={
+          isGalleryView
+            ? ""
+            : `outlet ${location.pathname === "/" ? "outlet-home" : ""}`
+        }
+      >
         <ImagesContext.Provider value={{ images, setImages }}>
           <AuthContextProvider>
             {loadingState ? <LoadingOverlay /> : <Outlet />}

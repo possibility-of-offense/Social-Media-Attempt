@@ -1,11 +1,40 @@
 import { updateProfile } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
+import {
+  collectionGroup,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import { Form, redirect } from "react-router-dom";
 import { auth, firestore } from "../../firebase-config/config";
 
 export async function editInfoAction({ request, params }) {
   const formData = await request.formData();
   const editInfoData = Object.fromEntries(formData);
+
+  const updateName = async () => {
+    const comments = await getDocs(
+      query(collectionGroup(firestore, "comments"))
+    );
+    const filter = comments.docs.filter((d) => {
+      const data = d.data();
+
+      if (data.ownerId === auth.currentUser.uid) {
+        return {
+          data,
+          ref: d.ref,
+        };
+      }
+    });
+
+    filter.forEach((el) => {
+      updateDoc(el.ref, {
+        ownerName: editInfoData.nickname,
+        ownerPhoto: editInfoData.image,
+      });
+    });
+  };
 
   await Promise.all([
     updateProfile(auth.currentUser, {
@@ -17,6 +46,7 @@ export async function editInfoAction({ request, params }) {
       photoURL: editInfoData.image,
       uid: params.id,
     }),
+    updateName(),
   ]);
 
   return redirect(`/user/${params.id}`);

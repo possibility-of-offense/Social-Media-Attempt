@@ -27,6 +27,14 @@
   opacity: 1;
 }
 
+.images .actions.actions.show-actions .prev-btn {
+  margin-right: auto;
+}
+
+.images .actions.actions.show-actions .next-btn {
+  margin-left: auto;
+}
+
 .images .actions button {
   color: #fff;
   background-color: var(--primary-bg);
@@ -61,18 +69,6 @@
   height: 100%;
   object-fit: cover;
 }
-
-/* .skeleton-image {
-  background-color: red;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  z-index: 100;
-} */
 
 .comment-info {
   background-color: #ddd;

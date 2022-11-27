@@ -89,7 +89,9 @@ const User = () => {
 
         {navigation.state === "loading" &&
           navigation.location.pathname.endsWith("/gallery") && (
-            <SkeletonUserGallery />
+            <SkeletonUserGallery
+              isAuthor={paramsId === userState?.currentUser?.uid}
+            />
           )}
 
         {navigation.state === "idle" && (

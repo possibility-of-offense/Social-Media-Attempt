@@ -1,0 +1,10 @@
+.search-view {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.search-view h1 {
+  font-size: 18px;
+  margin: 0;
+  margin-bottom: 15px;
+}

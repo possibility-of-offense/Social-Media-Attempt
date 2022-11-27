@@ -35,7 +35,8 @@
 .navbar-list li {
   overflow: hidden;
   border-radius: 3.5px;
-  transition: background-color 0.25s ease-out;
+  transition: background-color 0.25s ease-out, width 2s ease-in-out;
+  width: auto;
 }
 
 .navbar-list li a {
@@ -51,7 +52,17 @@
   transition: background-color 0.25s ease-out;
 }
 
-.navbar-list li:hover {
+.navbar-list .search-li {
+  cursor: pointer !important;
+}
+
+/* @media (orientation: landscape) and (min-width: 1024px) {
+  .search-li {
+    width: 280px;
+  }
+} */
+
+.navbar-list li:not(.no-hover-effect):hover {
   background-color: #fff;
   color: var(--primary-bg);
   fill: var(--primary-bg);

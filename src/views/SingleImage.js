@@ -103,18 +103,16 @@ const SingleImage = () => {
               : ""
           }`}
         >
-          <button
-            className={disablePrev ? classes["disable"] : ""}
-            onClick={handlePrevClick}
-          >
-            Prev
-          </button>
-          <button
-            className={disableNext ? classes["disable"] : ""}
-            onClick={handleNextClick}
-          >
-            Next
-          </button>
+          {!disablePrev && (
+            <button className={classes["prev-btn"]} onClick={handlePrevClick}>
+              Prev
+            </button>
+          )}
+          {!disableNext && (
+            <button className={classes["next-btn"]} onClick={handleNextClick}>
+              Next
+            </button>
+          )}
         </div>
         <div className={classes["image-wrapper__parent"]}>
           <div className={classes["image-wrapper"]}>

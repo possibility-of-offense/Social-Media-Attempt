@@ -1,0 +1,36 @@
+.skeleton-home-users {
+  margin-top: 1rem;
+  display: grid;
+  grid-gap: 1rem;
+}
+
+@media (orientation: landscape) {
+  .skeleton-home-users {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.skeleton-home-users > div {
+  height: 250px;
+  padding: 1rem;
+  border-radius: 5px;
+  margin: 1rem;
+  margin-right: 2rem;
+
+  box-shadow: 0 1px 2.5px 0.5px #ddd;
+  object-fit: cover;
+  position: relative;
+  overflow: hidden;
+  background: #eee;
+  background: linear-gradient(90deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  border-radius: 5px;
+  background-size: 200% 100%;
+  -webkit-animation: 1.5s shine linear infinite;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}

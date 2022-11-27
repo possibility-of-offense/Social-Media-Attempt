@@ -1,5 +1,11 @@
-import { Fragment, useCallback, useLayoutEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import {
+  Fragment,
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { auth } from "../../firebase-config/config";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -9,55 +15,41 @@ import { gsap } from "gsap";
 
 const Navigation = ({ onLogout, isLoading }) => {
   const routing = useLocation();
-  const [userState] = useAuthState(auth);
+  const [userState, loadingState, errorState] = useAuthState(auth);
+
+  const { id: paramsId } = useParams();
 
   let appendClasses = (route) =>
     route === routing.pathname ? "active-navbar-link" : "";
 
   const [widerForm, setWiderForm] = useState(false);
   const [tl, setTl] = useState();
+  const liRef = useRef(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
       setTl(tl);
     });
-
     return () => ctx.revert();
   }, []);
 
-  const animateFn = useCallback(
-    (e) => {
-      if (e.target.tagName === "BUTTON" || e.target.tagName === "IMG") {
-        e.stopPropagation();
-        return;
-      }
-
-      if (!widerForm) {
-        setWiderForm(true);
-        tl.to(e.target, {
-          width: 450,
-        });
-      }
-    },
-    [widerForm, tl]
-  );
-
-  const handleBlurLi = useCallback(
-    (e) => {
-      if (widerForm) {
-        setWiderForm(false);
-
-        tl.to(e.target, {
-          width: 210,
-        });
-      }
-    },
-    [widerForm, tl]
-  );
+  const animateFn = useCallback(() => {
+    if (!widerForm) {
+      tl.to(liRef.current, {
+        width: 400,
+        stagger: 0.1,
+      });
+    } else {
+      tl.to(liRef.current, {
+        width: 255,
+      });
+    }
+  }, [widerForm, liRef, tl]);
 
   const handleSearchCLick = (e) => {
     animateFn(e);
+    setWiderForm((prev) => !prev);
   };
 
   return (
@@ -99,7 +91,11 @@ const Navigation = ({ onLogout, isLoading }) => {
             </li>
 
             <li
-              onBlur={handleBlurLi}
+              ref={liRef}
+              onBlur={() => {
+                setWiderForm(false);
+                animateFn();
+              }}
               onClick={handleSearchCLick}
               className={`search-li ${classes["no-hover-effect"]} ${
                 widerForm ? classes["wider-li"] : ""

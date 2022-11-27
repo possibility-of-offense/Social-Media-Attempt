@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useLoaderData, useFetcher, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/auth-context";
 import { ImagesContext } from "../../context/images-context";
-import { auth, firestore, storage } from "../../firebase-config/config";
+import { firestore, storage } from "../../firebase-config/config";
 
 import photograph from "./photograph.png";
 import classes from "./UserGallery.module.css";
@@ -75,12 +75,8 @@ const UserGallery = () => {
   useEffect(() => {
     imagesContext.setImages(gallery);
     setImageTitle("");
-  }, []);
-
-  useEffect(() => {
     setSelectedFile("");
-    setImageTitle("");
-  }, [gallery]);
+  }, [gallery, imagesContext]);
 
   const inputImageRef = useRef(null);
   const handleLabelClick = (e) => {

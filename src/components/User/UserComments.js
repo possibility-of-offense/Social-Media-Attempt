@@ -1,9 +1,12 @@
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { firestore } from "../../firebase-config/config";
+import { auth, firestore } from "../../firebase-config/config";
+import UserSingleComment from "./UserSingleComment";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const UserComments = ({ id }) => {
   const [comments, setComments] = useState([]);
+  const [userState] = useAuthState(auth);
 
   useEffect(() => {
     let snapshot;
@@ -15,11 +18,11 @@ const UserComments = ({ id }) => {
           (snap) => {
             if (snap.docs.length > 0) {
               setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+            } else {
+              setComments([]);
             }
           }
         );
-
-        console.log(comments);
       } catch (error) {
         console.log(error, "UserComments.js");
       }
@@ -30,14 +33,15 @@ const UserComments = ({ id }) => {
   }, []);
 
   return (
-    <section>
+    <section className="mt-1-5">
       {comments.length > 0 &&
         comments.map((comment) => (
-          <div key={comment.id}>
-            <p>Author: {comment.ownerName}</p>
-            <img width="50" src={comment.ownerPhoto} />
-            <div>{comment.content}</div>
-          </div>
+          <UserSingleComment
+            key={comment.id}
+            comment={comment}
+            userState={userState}
+            postId={id}
+          />
         ))}
     </section>
   );

@@ -37,6 +37,10 @@ code {
   margin-left: auto;
 }
 
+.mt-1-5 {
+  margin-top: 1.5rem !important;
+}
+
 /* Flexbox */
 .flex {
   display: flex;
@@ -84,6 +88,10 @@ code {
 /* Outlet */
 .outlet {
   padding: 2rem 0;
+}
+
+.outlet-home {
+  padding: 1rem 0 !important;
 }
 
 /* Forms */

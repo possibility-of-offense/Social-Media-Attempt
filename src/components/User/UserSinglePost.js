@@ -40,15 +40,16 @@ const UserSinglePost = ({ post }) => {
     (Number(date.getMonth()) + 1) +
     ":" +
     date.getFullYear() +
-    " -- " +
+    " - " +
     date.getHours() +
     ":" +
     date.getMinutes();
 
   const [alreadyLikes, setAlreadyLikes] = useState(false);
-  const [likesNumber, setLikesNumber] = useState(0);
+  const [likesNumber, setLikesNumber] = useState(null);
 
   const [showCommentForm, setShowCommentForm] = useState(false);
+  const [likesLoaded, setLikesLoaded] = useState(false);
 
   useEffect(() => {
     async function getLikes() {
@@ -68,6 +69,8 @@ const UserSinglePost = ({ post }) => {
       if (likesNum.docs.length > 0) {
         setLikesNumber(likesNum.docs.length);
       }
+
+      setLikesLoaded(true);
     }
     getLikes();
   }, []);
@@ -132,9 +135,19 @@ const UserSinglePost = ({ post }) => {
       </div>
       <p>{post.content}</p>
 
-      {likesNumber && (
+      {likesNumber !== null && likesLoaded ? (
         <div className={classes["likes-wrapper"]}>
           <span className="box-shadow-2">{likesNumber} likes</span>
+        </div>
+      ) : likesNumber === null && likesLoaded !== true ? (
+        <div
+          className={`${classes["likes-wrapper"]} ${classes["likes-wrapper--loading"]}`}
+        >
+          <span className="box-shadow-2">LOADING...</span>
+        </div>
+      ) : (
+        <div className={classes["likes-wrapper"]}>
+          <span className="box-shadow-2">0 likes</span>
         </div>
       )}
 
