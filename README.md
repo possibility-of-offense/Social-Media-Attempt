@@ -1,1 +1,1 @@
-Open [https://react-auth-b6928.web.app/](URL)
+Open [URL](https://react-auth-b6928.web.app/)
