@@ -1,0 +1,31 @@
+.initial-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.initial-modal > div {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 101;
+}
+
+.initial-modal h5 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.initial-modal p {
+  font-size: 13px;
+  margin: 6px 0;
+}

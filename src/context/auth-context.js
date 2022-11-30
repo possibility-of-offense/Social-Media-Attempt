@@ -15,6 +15,7 @@ const AuthContextProvider = ({ children }) => {
   const [friend, setFriend] = useState(null);
 
   const [userState, loadingState, errorState] = useAuthState(auth);
+  const [hideModal, setHideModal] = useState(false);
 
   useEffect(() => {
     if (userState) {
@@ -41,12 +42,18 @@ const AuthContextProvider = ({ children }) => {
     setUser(null);
   };
 
+  const onHideModal = () => {
+    setHideModal(true);
+  };
+
   const contextValue = {
     user,
     setUser: handleSetUser,
     removeUser: handleRemoveUser,
     friend,
     setFriend: handleSetFriend,
+    hideModal,
+    onHideModal,
   };
 
   return (

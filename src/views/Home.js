@@ -1,3 +1,4 @@
+import Modal from "../components/UI/Modal";
 import HomeUsers from "../components/Home/HomeUsers";
 import SkeletonHomeUsers from "../components/Skeletons/SkeletonHomeUsers";
 import useFetchUsers from "../hooks/fetchUsers";
@@ -8,6 +9,7 @@ const Home = () => {
 
   return (
     <div className={`container-lg mt-3 ${classes["home"]}`}>
+      <Modal />
       <h1>See some people</h1>
       {loading === true ? (
         <SkeletonHomeUsers />
